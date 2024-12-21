@@ -10,6 +10,7 @@ systemctl daemon-reload
 systemctl restart finance.com.gunicorn
 exit
 
+root
 cd finance
 git pull
 systemctl daemon-reload
