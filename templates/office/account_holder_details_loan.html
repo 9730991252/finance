@@ -1,0 +1,213 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load office_tag %}
+
+{% include 'include/alert.html' %}
+<div>
+    welcome - {{e.name}}
+</div>
+{% include 'include/office/office_menu.html' %}
+<style>
+    .loan{
+        background-color: #FFC107;
+        color: black;
+        border: none;
+    }
+    .flex{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+</style>
+
+<div class="text-center"><h5><b>{{account_holder.holder_name}}</b></h5></div>
+<div class="container">
+<br>
+<div id="date"></div>
+<br>
+
+
+{% if loan %}
+
+<center><b>Loan <b class="text-danger"> {{loan.loan_amount}}</b></b></center>
+
+{% else %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add Loan
+</button>
+{% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">कर्जाचा तपशील भरा</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                    <div class="text-center">
+                        <h5><b>{{account_holder.holder_name}}</b></h5>
+                    </div>
+                    <div class="mb-3">
+                        <div>कर्ज रक्कम</div>
+                        <div><input type="number"  oninput="check_input()" id="loan_amount" name="loan_amount"  class="form-control" required></div>
+                    </div>
+                    <div class="mb-3">
+                        <div>वार्षिक व्याज दर</div>
+                        <div><input type="number" oninput="check_input()" id="interest_percentage" name="interest_percentage" oninput="check_amount()" class="form-control" required></div>
+                    </div>
+                    <div class="mb-3">
+                        <div>कमीत कमी हप्ता</div>
+                        <div><input type="number" oninput="check_input()" id="minimum_installment" name="minimum_installment"  oninput="check_amount()" class="form-control" required></div>
+                    </div>
+                    <div class="mb-3">
+                        <div>गुप्त संख्या </div>
+                        <div><input type="number" id="pin_input" oninput="check_pin()" class="form-control" disabled></div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-danger" name="add_loan" id="add_loan_amount" data-bs-dismiss="modal" disabled>Add</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<br>
+
+
+
+
+
+
+
+<div class="flex">
+    <div class="text-success">Available Balence <b>{% account_holder_available_balence account_holder.id as n %}{{n}}</b></div>
+</div>
+
+</div>
+
+<br>
+<div class="text-center">
+    <h5><b>Last Five Transaction</b></h5>
+</div>
+
+<script>
+opining_balence = Number('{{n}}')
+</script>
+
+{% for t in last_five_transaction %}
+
+<div>
+    <div class="flex">
+        <div class="">{{t.added_date}}</div>
+        <div class="">{{t.remark}}</div>
+        {% if t.credit_amount != None %}
+            <div class="text-success"><b>{{t.credit_amount}}</b></div>
+        {% else %}
+            <div class="text-danger"><b>{{t.debit_amount}}</b></div>
+        {% endif %}
+    </div>
+    <div class="text-center">
+        <p style="font-size: 15px;margin-bottom: 0px;margin-top: 5px;">Balence <strong id="opining_balence_div{{t.id}}"></strong></p>
+    </div>
+</div>
+<hr>
+{% if t.credit_amount != None %}
+<script>
+    document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    opining_balence = opining_balence - Number('{{t.credit_amount}}')
+</script>
+{% else %}
+<script>
+    document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    opining_balence = opining_balence + Number('{{t.debit_amount}}')
+</script>
+{% endif %}
+{% endfor %}
+
+<script>
+function check_pin(){
+    if(document.getElementById('pin_input').value == Number('{{e.pin}}')){
+        document.getElementById('add_loan_amount').disabled = false
+    }
+    if(document.getElementById('pin_input').value != Number('{{e.pin}}')){
+        document.getElementById('add_loan_amount').disabled = true
+    }
+
+}
+
+
+function check_input(){
+loan_amount = document.getElementById('loan_amount').value;
+if(Number(loan_amount) == 0){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('pin_input').disabled = true
+}
+if(Number(loan_amount) < 0){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('loan_amount').value = 0   
+}
+
+
+interest_percentage = document.getElementById('interest_percentage').value;
+if(Number(interest_percentage) < 0){
+    pin_input.value = ''
+    check_pin()
+
+    document.getElementById('interest_percentage').value = 0
+}
+
+minimum_installment = document.getElementById('minimum_installment').value;
+if(Number(minimum_installment) < 0){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('minimum_installment').value = 0
+}
+
+
+
+if (loan_amount != '' && interest_percentage != '' && minimum_installment != ''){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('pin_input').disabled = false
+    
+}
+if (loan_amount == '' || interest_percentage == '' || minimum_installment == ''){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('pin_input').disabled = true
+}
+
+if(Number(loan_amount) == 0){
+    pin_input.value = ''
+    check_pin()
+    document.getElementById('pin_input').disabled = true
+}
+
+}
+
+
+document.getElementById("date").innerHTML = formatAMPM();
+function formatAMPM() {
+var d = new Date(),
+    minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
+    hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
+    ampm = d.getHours() >= 12 ? 'pm' : 'am',
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+return days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear()+' '+hours+':'+minutes+ampm;
+}
+</script>
+{% endblock content %}

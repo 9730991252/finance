@@ -1,0 +1,35 @@
+<div class="text-center">
+    <h5>Today's Collection</h5>
+</div>
+
+
+<div class="container">
+<div class="collection-table">
+    <div class="header">Office Employee Name</div>
+    <div class="header">Amount</div>
+    {% for o in office_employee %}
+        <div>{{ o.name }}</div>
+        <div>{{ o.credit_amount }}</div>
+    {% endfor %}
+    <div style="background-color: #f0f0f0;"><b>Total</b></div>
+    <div style="background-color: #f0f0f0;"><b>{{todays_collection}}</b></div>
+
+</div>
+</div>
+<style>
+    .collection-table {
+        padding: 1px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1px;
+        background-color: black;
+    }
+    .collection-table > div {
+        background-color: white;
+        padding: 8px;
+    }
+    .header {
+        font-weight: bold;
+        background-color: #f0f0f0 !important;
+    }
+</style>

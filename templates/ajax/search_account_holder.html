@@ -1,0 +1,41 @@
+<style>
+    .account_holder_box {
+        border: 1px solid #464646;
+        padding: 10px;
+        margin: 10px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .account_holder_name {
+        font-size: 20px;
+    }
+
+    .account_holder_address {
+        font-size: 15px;
+    }
+
+    .account_holder_mobile {
+        font-size: 15px;
+    }
+
+    .flex {
+        display: flex;
+        gap: 10px;
+        justify-content: space-evenly;
+    }
+</style>
+{% load office_tag %}
+
+
+{% for a in a %}
+<div class="account_holder_box" onclick="select_account_holder('{{a.id}}')">
+    <div class="flex">
+        <div class="account_holder_name">{{a.holder_name}}</div>
+        <div class="account_holder_mobile">{{a.mobile}}</div>
+    </div>
+    <div class="account_holder_address">{{a.address}}</div>
+    <div class="account_holder_address text-success">Available Balence <b>{% account_holder_available_balence a.id %}</b></div>
+    <div id="account_holder_details"></div>
+</div>
+{% endfor %}

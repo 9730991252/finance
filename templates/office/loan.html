@@ -1,0 +1,43 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+
+{% load office_tag %}
+
+{% include 'include/alert.html' %}
+<div>
+    welcome - {{e.name}}
+</div>
+{% include 'include/office/office_menu.html' %}
+
+<div id="account_holder">
+{% todays_collection %}
+
+
+</div>
+
+<footer style="position: fixed; bottom: 0; width: 100%; background-color: #f1f1f1; text-align: center; padding: 10px;">
+<input type="text" class="form-control" id="search" placeholder="खातेदाराचे नाव  शोधा" oninput="search_account_holder()">
+</footer>
+
+
+<script>
+    function search_account_holder() {
+        var words = document.getElementById('search').value;
+        $.ajax({
+            url: "{% url 'search_account_holder' %}",
+            method: "GET",
+            data: {
+                'words': words
+            },
+            success: function(response) {
+                document.getElementById('account_holder').innerHTML = response.t ;
+            }
+        });
+    }
+    function select_account_holder(account_holder_id) {
+        window.location.replace("/office/account_holder_details_loan/"+account_holder_id);
+    }
+</script>
+{% endblock content %}

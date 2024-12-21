@@ -1,0 +1,136 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% include 'include/alert.html' %}
+
+<div>
+  welcome - {{e.name}}
+</div>
+{% include 'include/office/office_menu.html' %}
+
+<div class="container">
+<br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Add Office employee
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">Employee Details</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form method="POST">{% csrf_token %}
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="mobile">Mobile</label>
+        <input type="number" id="mobile" name="mobile" placeholder="Mobile" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="pin">Pin</label>
+        <input type="text" id="pin" name="pin" placeholder="Pin" class="form-control"  required>
+      </div>
+      <div class="mb-2 mt-1">
+        <button type="submit" name="Add_employee" class="btn btn-primary">Add</button>
+      </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+    </div>
+  </div>
+  </div>
+<br><br><br>
+
+  <div class="grid-container">
+  <div class="grid-header">#</div>
+  <div class="grid-header">Name</div>
+  <div class="grid-header">Mobile</div>
+  <div class="grid-header">Pin</div>
+  <div class="grid-header">Status</div>
+  <div class="grid-header">Edit</div>
+  {% for e in employee %}
+  <div class="grid-item">{{forloop.counter}}</div>
+  <div class="grid-item">{{e.name}}</div>
+  <div class="grid-item">{{e.mobile}}</div>
+  <div class="grid-item">{{e.pin}}</div>
+  <div class="grid-item">
+    <form method="POST">{% csrf_token %}
+    {% if e.status == 1 %}
+    <button class="btn btn-success" type="submit" name="active">Active<input type="hidden" name="id" value="{{e.id}}"></button>
+    {% else %}
+    <button class="btn btn-danger" type="submit" name="deactive">Deactive<input type="hidden" name="id" value="{{e.id}}"></button>
+    {% endif %}
+    </form>
+  </div>
+  <div class="grid-item">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Add_shope{{e.id}}">Edit</button>
+  </div>
+  <div class="modal fade" id="Add_shope{{e.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit To - {{e.shope_name}}</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form method="POST">{% csrf_token %}
+        <input type="hidden" value="{{e.id}}" name="id">
+        <div class="mb-3">
+        <label for="name"> Name</label>
+        <input type="text" value="{{e.name}}" id="name" name="name" placeholder="Name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+        <label for="mobile">Mobile</label>
+        <input type="number" id="mobile" name="mobile" value="{{e.mobile}}" placeholder="Mobile" class="form-control" required>
+        </div>
+        <div class="mb-3">
+        <label for="pin">Pin</label>
+        <input type="text" id="pin" name="pin" placeholder="Pin" value="{{e.pin}}" class="form-control"  required>
+        </div>
+        <div class="mb-2 mt-1">
+        <button type="submit" name="Edit_employee" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+
+</div>
+
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border-collapse: collapse;
+  }
+  .grid-header{
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  .grid-item {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+</style>
+
+{% endblock content %}

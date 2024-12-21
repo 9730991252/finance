@@ -1,0 +1,137 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load office_tag %}
+
+{% include 'include/alert.html' %}
+<div>
+    welcome - {{e.name}}
+</div>
+{% include 'include/office/office_menu.html' %}
+<style>
+    .withdraw{
+        background-color: #FFC107;
+        color: black;
+        border: none;
+    }
+    .flex{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+</style>
+
+<div class="text-center"><h5><b>{{account_holder.holder_name}}</b></h5></div>
+<div class="container">
+<br>
+<div id="date"></div>
+<br>
+<form method="post">
+{% csrf_token %}
+<div><input type="number" oninput="check_amount()" class="form-control" placeholder="Withdraw Amount" id="Withdraw_amount" name="withdraw_amount" required></div>
+<br>
+<div>Total Available <b id="total_amount">{% account_holder_available_balence account_holder.id %}</b></div>
+<br>
+<input type="password" disabled oninput="check_pin()" class="form-control" placeholder="Enter your secret Pin" id="pin_input">
+<br>
+<div><button type="submit" disabled  class="btn btn-danger" name="Withdraw_amount" id="Collect_amount" onclick="document.getElementById('Collect_amount').style.display = 'none'; document.getElementById('Withdraw_amount').style.display = 'none' ">Withdraw</button></div>
+</form>
+
+<br>
+
+
+
+
+
+<div class="flex">
+    <div class="text-success">Available Balence <b>{% account_holder_available_balence account_holder.id as n %}{{n}}</b></div>
+</div>
+
+</div>
+
+<br>
+<div class="text-center">
+    <h5><b>Last Five Transaction</b></h5>
+</div>
+
+<script>
+opining_balence = Number('{{n}}')
+</script>
+
+{% for t in last_five_transaction %}
+
+<div>
+    <div class="flex">
+        <div class="">{{t.added_date}}</div>
+        <div class="">{{t.remark}}</div>
+        {% if t.credit_amount != None %}
+            <div class="text-success"><b>{{t.credit_amount}}</b></div>
+        {% else %}
+            <div class="text-danger"><b>{{t.debit_amount}}</b></div>
+        {% endif %}
+    </div>
+    <div class="text-center">
+        <p style="font-size: 15px;margin-bottom: 0px;margin-top: 5px;">Balence <strong id="opining_balence_div{{t.id}}"></strong></p>
+    </div>
+</div>
+<hr>
+{% if t.credit_amount != None %}
+<script>
+    document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    opining_balence = opining_balence - Number('{{t.credit_amount}}')
+</script>
+{% else %}
+<script>
+    document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    opining_balence = opining_balence + Number('{{t.debit_amount}}')
+</script>
+{% endif %}
+{% endfor %}
+
+<script>
+function check_pin(){
+    if(document.getElementById('pin_input').value == Number('{{e.pin}}')){
+        document.getElementById('Collect_amount').disabled = false
+    }
+    if(document.getElementById('pin_input').value != Number('{{e.pin}}')){
+        document.getElementById('Collect_amount').disabled = true
+    }
+
+}
+function check_amount(){
+    total_amount.innerText = (Number('{% account_holder_available_balence account_holder.id %}') - Number(Withdraw_amount.value));
+    if(Number(Withdraw_amount.value) > 0){
+        pin_input.disabled = false
+    }
+    if(Number(Withdraw_amount.value) > Number('{% account_holder_available_balence account_holder.id %}')){
+        pin_input.value = ''
+        check_pin()
+        pin_input.disabled = true
+        document.getElementById('Withdraw_amount').value = 0
+    }
+    if(Number(Withdraw_amount.value) < 0){
+        pin_input.value = ''
+        check_pin()
+        pin_input.disabled = true
+        document.getElementById('Withdraw_amount').value = 0
+    }
+    if (Number(Withdraw_amount.value) < 1){
+        pin_input.value = ''
+        check_pin()
+        pin_input.disabled = true
+    }
+}
+
+document.getElementById("date").innerHTML = formatAMPM();
+function formatAMPM() {
+var d = new Date(),
+    minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
+    hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
+    ampm = d.getHours() >= 12 ? 'pm' : 'am',
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+return days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear()+' '+hours+':'+minutes+ampm;
+}
+</script>
+{% endblock content %}
