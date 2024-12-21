@@ -8,6 +8,7 @@ def account_holder_home(request):
         a = Account_holder.objects.filter(mobile=mobile).first()
         context={
             'a':a,
+            'last_five_transaction':Saving_account.objects.filter(account_holder_id=a.id).order_by('-id')
         }
         return render(request, 'account_holder/account_holder_home.html', context)
     else:

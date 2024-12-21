@@ -9,6 +9,53 @@
 </div>
 {% include 'include/account_holder/account_holder_menu.html' %}
 {% summary %}
+<br><br>
+<style>
+    .collection{
+        background-color: #FFC107;
+        color: black;
+        border: none;
+    }
+    .flex{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+</style>
 
+
+<script>
+    opining_balence = Number('{{n}}')
+    </script>
+    
+    {% for t in last_five_transaction %}
+    
+    <div>
+        <div class="flex">
+            <div class="">{{t.added_date}}</div>
+            <div class="">{{t.remark}}</div>
+            {% if t.credit_amount != None %}
+                <div class="text-success"><b>{{t.credit_amount}}</b></div>
+            {% else %}
+                <div class="text-danger"><b>{{t.debit_amount}}</b></div>
+            {% endif %}
+        </div>
+        <div class="text-center">
+            <p style="font-size: 15px;margin-bottom: 0px;margin-top: 5px;">Balence <strong id="opining_balence_div{{t.id}}"></strong></p>
+        </div>
+    </div>
+    <hr>
+    {% if t.credit_amount != None %}
+    <script>
+        opining_balence = opining_balence + Number('{{t.credit_amount}}') 
+        document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    </script>
+    {% else %}
+    <script>
+        opining_balence = opining_balence - Number('{{t.debit_amount}}')  
+        document.getElementById('opining_balence_div{{t.id}}').innerHTML = opining_balence
+    </script>
+    {% endif %}
+    {% endfor %}
 
 {% endblock content %}
