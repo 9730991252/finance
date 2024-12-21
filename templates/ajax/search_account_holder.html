@@ -24,10 +24,16 @@
         gap: 10px;
         justify-content: space-evenly;
     }
+    .account_holder_main_box{
+        height: 100%;
+        height: fit-content;
+        margin-top: auto;
+        margin-bottom: 0px;
+    }
 </style>
 {% load office_tag %}
 
-
+<div class="account_holder_main_box">
 {% for a in a %}
 <div class="account_holder_box" onclick="select_account_holder('{{a.id}}')">
     <div class="flex">
@@ -39,3 +45,4 @@
     <div id="account_holder_details"></div>
 </div>
 {% endfor %}
+</div>

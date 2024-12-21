@@ -32,14 +32,8 @@ virtualenv venv
 
 source venv/bin/activate
 
-************************************
-
-pip install num2words
-
-***************************
-pip install pillow
-
 ****************migrations******
+
 python3 manage.py makemigrations
 
 *********** migrate ********
@@ -61,11 +55,11 @@ deactivate
 
 ************ Create System Socket File for Gunicorn *******
 
-Example:- sudo nano /etc/systemd/system/crenta.in.gunicorn.socket
+Example:-  nano /etc/systemd/system/crenta.in.gunicorn.socket
 
 cd  /etc/systemd/system/
 
-sudo nano finance.com.gunicorn.socket
+ nano finance.com.gunicorn.socket
 
 
 
@@ -80,12 +74,12 @@ WantedBy=sockets.target
 
 
 ************** Create System Service File for Gunicorn ******
-Syntax:- sudo nano /etc/systemd/system/your_domain.gunicorn.service
-Example:- sudo nano /etc/systemd/system/narayaniorder.com.gunicorn.service
+Syntax:-  nano /etc/systemd/system/your_domain.gunicorn.service
+Example:-  nano /etc/systemd/system/narayaniorder.com.gunicorn.service
 
 cd  /etc/systemd/system/
 
-sudo nano finance.com.gunicorn.service
+ nano finance.com.gunicorn.service
 
 
 [Unit]
@@ -107,28 +101,28 @@ ExecStart=/root/finance/venv/bin/gunicorn \
 WantedBy=multi-user.target
 
 ----------------------------------------------------------------
-sudo systemctl start finance.com.gunicorn.socket
+ systemctl start finance.com.gunicorn.socket
 
-sudo systemctl start finance.com.gunicorn.service
+ systemctl start finance.com.gunicorn.service
 
 
 -----------------------------------------------------------------
 
-sudo systemctl enable finance.com.gunicorn.socket
+ systemctl enable finance.com.gunicorn.socket
 
-sudo systemctl enable finance.com.gunicorn.service
+ systemctl enable finance.com.gunicorn.service
 
 
 -----------------------------------------------------------------------
 
-sudo systemctl status finance.com.gunicorn.socket
+ systemctl status finance.com.gunicorn.socket
 
-sudo systemctl status finance.com.gunicorn.service
+ systemctl status finance.com.gunicorn.service
 
 -------------------------------------------
 
-sudo systemctl daemon-reload
-sudo systemctl restart finance.com.gunicorn
+ systemctl daemon-reload
+ systemctl restart finance.com.gunicorn
 
 
 
@@ -137,13 +131,13 @@ sudo systemctl restart finance.com.gunicorn
 
 
 ****************** Create Virtual Host File ******
-Syntax:- sudo nano /etc/nginx/sites-available/your_domain
-Example:- sudo nano /etc/nginx/sites-available/crenta.in
+Syntax:-  nano /etc/nginx/sites-available/your_domain
+Example:-  nano /etc/nginx/sites-available/crenta.in
 
 
 cd /etc/nginx/sites-available
 
-sudo nano finance.com
+ nano finance.com
 
 
 
@@ -170,26 +164,26 @@ server{
 
 ########## Enable Virtual Host or Create Symbolic Link of Virtual Host File ########
 
-sudo ln -s /etc/nginx/sites-available/finance.com /etc/nginx/sites-enabled/finance.com
+ ln -s /etc/nginx/sites-available/finance.com /etc/nginx/sites-enabled/finance.com
 
 
 %%%%%%%%%%%%%%%%%%%%% Check Configuration is Correct or Not %%%%%
 
-sudo nginx -t
+ nginx -t
 
 %%%%%%%%%%%% Restart Nginx %%%%%%%%%
 
-sudo service nginx restart
+ service nginx restart
 
 
 ********** restart ******
 
-sudo systemctl daemon-reload
-sudo systemctl restart finance.com.gunicorn
+ systemctl daemon-reload
+ systemctl restart finance.com.gunicorn
 
 
 --------------------------------------- ssl ------------------
 
-sudo certbot --nginx
+ certbot --nginx
 
-sudo certbot --nginx -d janmanasnews.com -d www.janmanasnews.com
+ certbot --nginx -d janmanasnews.com -d www.janmanasnews.com
