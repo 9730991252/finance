@@ -1,0 +1,41 @@
+<br>
+<style>
+    .summary-table {
+        padding: 1px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1px;
+        background-color: black;
+    }
+    .summary-table > div {
+        background-color: white;
+        padding: 8px;
+    }
+    .header-summary {
+        font-weight: bold;
+
+        grid-column-start: 1;
+        grid-column-end: 3;
+        font-size: 18px;
+        text-align: center;
+        }
+</style>
+
+
+<div class="container">
+<div class="summary-table">
+    <div class="header-summary">Summary</div>
+
+    <div>Total Account Holder</div>
+    <div class="text"><b>{{ total_account_holder }}</b></div>
+
+    <div>Total Office Employee</div>
+    <div class="text"><b>{{ total_office_employee }}</b></div>
+
+    <div>Total Pending Loan</div>
+    <div class="text-danger"><b>{{ loan_amount_pending }}</b></div>
+
+    <div>Avalable Amount</div>
+    <div class="text-success"><b>{{ avalable_amount }}</b></div>
+</div>
+</div>

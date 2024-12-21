@@ -2,20 +2,6 @@
     <h5>Today's Collection</h5>
 </div>
 
-
-<div class="container">
-<div class="collection-table">
-    <div class="header">Office Employee Name</div>
-    <div class="header">Amount</div>
-    {% for o in office_employee %}
-        <div>{{ o.name }}</div>
-        <div>{{ o.credit_amount }}</div>
-    {% endfor %}
-    <div style="background-color: #f0f0f0;"><b>Total</b></div>
-    <div style="background-color: #f0f0f0;"><b>{{todays_collection}}</b></div>
-
-</div>
-</div>
 <style>
     .collection-table {
         padding: 1px;
@@ -28,8 +14,23 @@
         background-color: white;
         padding: 8px;
     }
-    .header {
+    .header-collection {
         font-weight: bold;
-        background-color: #f0f0f0 !important;
+        background-color: #dfffdb !important;
     }
 </style>
+
+
+<div class="container">
+<div class="collection-table">
+    <div class="header-collection">Office Employee Name</div>
+    <div class="header-collection">Amount</div>
+    {% for o in office_employee %}
+        <div>{{ o.name }}</div>
+        <div class="text-success"><b>{{ o.credit_amount }}</b></div>
+    {% endfor %}
+    <div style="background-color: #dfffdb;"><b>Total</b></div>
+    <div style="background-color: #dfffdb;"><b>{{todays_collection}}</b></div>
+
+</div>
+</div>

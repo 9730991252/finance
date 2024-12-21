@@ -1,0 +1,36 @@
+<br><br>
+<div class="text-center">
+    <h5>Today's Withdrawal</h5>
+</div>
+
+
+<div class="container">
+<div class="collection-table">
+    <div class="header-withdrawal">Office Employee Name</div>
+    <div class="header-withdrawal">Amount</div>
+    {% for o in office_employee %}
+        <div>{{ o.name }}</div>
+        <div class="text-danger"><b>{{ o.debit_amount }}</b></div>
+    {% endfor %}
+    <div style="background-color: #ffd4d4;"><b>Total</b></div>
+    <div style="background-color: #ffd4d4;"><b>{{todays_withdrawal}}</b></div>
+
+</div>
+</div>
+<style>
+    .collection-table {
+        padding: 1px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1px;
+        background-color: black;
+    }
+    .collection-table > div {
+        background-color: white;
+        padding: 8px;
+    }
+    .header-withdrawal {
+        font-weight: bold;
+        background-color: #ffd4d4 !important;
+    }
+</style>
