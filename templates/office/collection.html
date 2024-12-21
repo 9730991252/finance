@@ -11,6 +11,8 @@
 </div>
 {% include 'include/office/office_menu.html' %}
 
+
+
 <div id="account_holder">
 
 {% todays_collection %}
@@ -34,9 +36,6 @@
             },
             success: function(response) {
                 document.getElementById('account_holder').innerHTML = response.t ;
-                $(window).scrollTop(0);
-
-                // window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "instant" });
             }
         });
     }
