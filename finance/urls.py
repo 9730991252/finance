@@ -23,4 +23,5 @@ urlpatterns = [
     path('sunil/', include('sunil.urls')),
     path('office/', include('office.urls')),
     path('ajax/', include('ajax.urls')),
+    path('account_holder/', include('account_holder.urls')),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

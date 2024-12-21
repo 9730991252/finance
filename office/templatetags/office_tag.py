@@ -16,6 +16,11 @@ def account_holder_available_balence(account_holder_id):
     total_avalable_balence = (credit['credit_amount__sum'] - debit['debit_amount__sum'])
     return total_avalable_balence
 
+@register.simple_tag()
+def account_holder_pending_loan(account_holder_id):
+    loan = Loan.objects.filter(account_holder_id=account_holder_id, loan_status=1).aggregate(Sum('loan_amount'))
+    return loan['loan_amount__sum']
+
 @register.inclusion_tag('inclusion_tag/office/todays_collection.html')
 def todays_collection():
     todays_collection = Saving_account.objects.filter(date=date.today()).aggregate(Sum('credit_amount'))

@@ -47,6 +47,7 @@
     </div>
     <div class="account_holder_address">{{a.address}}</div>
     <div class="account_holder_address text-success">Available Balence <b>{% account_holder_available_balence a.id %}</b></div>
+    <div class="account_holder_address text-danger">Pending Loan <b>{% account_holder_pending_loan a.id %}</b></div>
     <div id="account_holder_details"></div>
 </div>
 {% endfor %}

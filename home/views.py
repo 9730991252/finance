@@ -18,6 +18,10 @@ def login(request):
             if o:
                 request.session['office_mobile'] = request.POST["number"]
                 return redirect('office_home')
+            a = Account_holder.objects.filter(mobile=number,pin=pin,status=1)
+            if a:
+                request.session['account_holder_mobile'] = request.POST["number"]
+                return redirect('account_holder_home')
             else:
                 return redirect('/login/')
     return render(request, 'home/login.html')

@@ -1,0 +1,14 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load office_tag %}
+{% include 'include/alert.html' %}
+<div>
+    welcome - {{a.holder_name}}
+</div>
+{% include 'include/account_holder/account_holder_menu.html' %}
+{% summary %}
+
+
+{% endblock content %}

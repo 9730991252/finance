@@ -45,6 +45,9 @@
 <div class="flex">
     <div class="text-success">Available Balence <b>{% account_holder_available_balence account_holder.id as n %}{{n}}</b></div>
 </div>
+<div class="flex">
+<div class="account_holder_address text-danger">Pending Loan <b>{% account_holder_pending_loan account_holder.id %}</b></div>
+</div>
 
 </div>
 
